@@ -21,7 +21,7 @@
 </script>
 
 <svelte:head>
-	<title>Campaigns | BCRV</title>
+	<title>Settings | BCRV</title>
 </svelte:head>
 
 <Container>
@@ -64,7 +64,7 @@
 	<div slot="title">
 		Add New Source
 	</div> 
-	<form method="POST" use:enhance={handleSubmit} slot="form" class="px-4 py-8 flex flex-col items-center justify-center space-y-4">
+	<form action="?/newSource" method="POST" use:enhance={handleSubmit} slot="form" class="px-4 py-8 flex flex-col items-center justify-center space-y-4">
 		{#if $page.form?.error}
 			<dl class="w-full max-w-lg">
 				<div class="grid sm:px-6">
@@ -98,7 +98,7 @@
 	<div slot="title">
 		Add New Medium
 	</div> 
-	<form method="POST" use:enhance={handleSubmit} slot="form" class="px-4 py-8 flex flex-col items-center justify-center space-y-4">
+	<form action="?/newMedium" method="POST" use:enhance={handleSubmit} slot="form" class="px-4 py-8 flex flex-col items-center justify-center space-y-4">
 		{#if $page.form?.error}
 			<dl class="w-full max-w-lg">
 				<div class="grid sm:px-6">

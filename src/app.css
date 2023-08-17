@@ -11,7 +11,7 @@ body {
 }
 
 .full-width-button {
-	@apply mt-2 md:mt-0 px-8 py-3 text-white bg-blue-500 hover:bg-blue-400 font-medium rounded-sm text-sm ;
+	@apply mt-2 md:mt-0 px-8 py-3 w-full text-white bg-blue-500 hover:bg-blue-400 font-medium rounded-sm text-sm ;
 }
 
 .primary-button {
