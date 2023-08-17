@@ -2,9 +2,13 @@
 // for information about these interfaces
 declare global {
 	namespace App {
-		// interface Error {}
-		// interface Locals {}
-		// interface PageData {}
+		interface Supabase {
+			Database: import('$lib/database.types').Database;
+			SchemaName: 'public';
+		}
+		interface PageData {
+			session: import('@supabase/supabase-js').Session | null;
+		}
 		// interface Platform {}
 	}
 }

@@ -7,21 +7,17 @@ body {
 }
 
 .standard-form {
-	@apply block w-full border border-gray-300 rounded-md shadow focus:ring-blue-500 focus:border-blue-500 text-sm font-normal;
+	@apply block w-full border border-gray-300 focus:ring-blue-500 focus:border-blue-500 rounded-sm text-sm font-normal;
 }
 
 .full-width-button {
-	@apply mt-2 md:mt-0 px-8 py-2 bg-blue-300 hover:bg-blue-400 shadow-md font-medium text-sm rounded-md;
+	@apply mt-2 md:mt-0 px-8 py-3 text-white bg-blue-500 hover:bg-blue-400 font-medium rounded-sm text-sm ;
 }
 
 .primary-button {
-	@apply px-4 py-2 text-white bg-blue-500 hover:bg-blue-400 shadow text-sm font-medium rounded-md;
-}
-
-.secondary-button {
-	@apply px-4 py-2 bg-gray-100 hover:bg-blue-300 hover:text-black shadow text-sm font-medium rounded-md;
+	@apply px-4 py-2 text-white bg-blue-500 hover:bg-blue-400 rounded-sm text-sm font-medium ;
 }
 
 .delete-button {
-	@apply px-4 py-2 bg-red-100 hover:bg-red-300 text-gray-700 hover:text-black text-sm font-normal rounded-md;
+	@apply px-4 py-2 bg-red-100 hover:bg-red-300 text-gray-700 hover:text-black rounded-sm text-sm font-normal ;
 }

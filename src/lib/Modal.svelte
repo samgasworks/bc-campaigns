@@ -20,10 +20,10 @@
 
 			<div
 				transition:scale|local={{ duration: 200, delay: 50, opacity: 0, start: 0.8, easing: cubicInOut }}
-				class="inline-block align-bottom border border-gray-300 bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle max-w-lg w-full"
+				class="inline-block align-bottom border border-gray-300 bg-white rounded-sm text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle max-w-lg w-full"
 			>
 				<div class="block absolute top-0 right-0 pt-3.5 pr-4">
-					<button on:click={() => ($currentModal = null)} type="button" class="bg-white text-gray-400 hover:text-black hover:bg-blue-100 hover:shadow rounded-full p-1 focus:outline-none">
+					<button on:click={() => ($currentModal = null)} type="button" class="bg-white text-gray-400 hover:text-black hover:bg-blue-100 hover:shadow rounded-sm p-1 focus:outline-none">
 						<span class="sr-only">Close</span>
 						<!-- Heroicon name: outline/x -->
 						<svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -32,7 +32,7 @@
 					</button>
 				</div>
 				<div class="flex items-center justify-center p-4 sm:px-6">
-					<h3 class="text-lg leading-6 font-semibold text-black" id="modal-title">
+					<h3 class="text-lg leading-6 font-medium text-black" id="modal-title">
 						<slot name="title" />
 					</h3>
 				</div>
