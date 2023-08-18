@@ -72,12 +72,133 @@
 		<div class="text-xl font-semibold text-gray-900">
 			Users
 		</div>
-		<button on:click={() => $currentModal = 'new_user'} class="primary-button">
+		<button on:click={() => $currentModal = 'send_invite'} class="primary-button">
 			<span class="mr-1.5">&#43;</span>Add New User
 		</button>
 	</div> 
-	<div slot="content"></div>
+	<div slot="content" class="divide-y divide-gray-200 text-sm">
+		{#if data.users}
+		{#each data.users as user}
+		{@const expired = Date.now() - new Date(user.created_at).getTime() > 86400000}
+		<div class="px-6 py-4 flex items-center justify-between">
+			<div class="{expired && user.accepted_invite ? 'text-red-800/75' : 'text-gray-900'}">
+				{user.first_name} {user.last_name}
+			</div>
+			<div class="flex items-center space-x-2 md:self-center">
+				<div class="{expired && user.accepted_invite ? 'text-red-800/75' : 'text-gray-900'}">
+					{user.email}
+				</div>
+				{#if expired && !user.accepted_invite}
+				<div class="text-sm font-normal text-red-600/50 bg-red-100 px-2 py-1 rounded-sm flex items-center space-x-1.5 shadow-sm">
+					<span class="text-red-700">Invite Expired</span>
+				</div>
+				{:else if !user.accepted_invite}
+				<div class="text-sm font-medium text-purple-600/50 bg-purple-100 px-2 py-1 rounded-sm flex items-center space-x-1.5 shadow-sm">
+					<span class="text-purple-700">Invited</span>
+				</div>
+				{/if}
+				{#if user.role === 10}
+				<div class="text-sm font-normal text-green-600/50 bg-green-100 px-2 py-1 rounded-sm flex items-center space-x-1.5 shadow-sm">
+					<span class="text-green-700">Admin</span>
+				</div>
+				{/if}
+			</div>
+			<div class="flex items-center justify-end space-x-2 md:self-center">
+				{#if $page.data.session?.user.email !== user.email}
+				<button on:click={() => ($currentModal = `${user.id}_remove_user`)} class="delete-button">
+					Remove
+				</button>
+				{/if}
+				{#if expired && !user.accepted_invite}
+				<form method="POST" action="?/resendInvite" use:enhance={handleSubmit}>
+					<input type="hidden" name="user_id" value={user.id} />
+					<input type="hidden" name="first_name" value={user.first_name} />
+					<input type="hidden" name="last_name" value={user.last_name} />
+					<input type="hidden" name="email" value={user.email} />
+					<input type="hidden" name="role" value={user.role} />
+					<button type="submit" disabled={$loading} class="text-black max-w-max primary-button">
+						Resend Invite
+					</button>
+				</form>
+				{:else}
+				<button on:click={() => ($currentModal = `${user.id}_update`)} class="secondary-button">
+					Update
+				</button>
+				{/if}
+			</div>
+		</div>
+		{/each}
+		{/if}
+	</div>
 </Container>
+
+<Modal trigger="send_invite">
+	<span slot="title"> Add Team Member </span>
+	<form method="POST" action="?/sendInvite" use:enhance={handleSubmit} slot="form" class="px-4 py-6 flex flex-col items-center justify-center space-y-4">
+		{#if $page.form?.error}
+			<dl class="w-full max-w-sm">
+				<div class="grid sm:px-6">
+					<div class="p-3 rounded-sm border bg-red-50 border-red-500/50 text-red-700 text-sm font-medium">
+						{$page.form.error}
+					</div>
+				</div>
+			</dl>
+		{/if}
+		<dl class="w-full max-w-lg">
+			<div class="grid sm:px-6">
+				<div class="text-center p-3 rounded-sm border bg-gray-50 border-gray-500/50 text-gray-700 text-sm font-light">
+					If your coworker doesn't accept the invitation within <span class="font-normal">24 hours</span>, you will need to resend the invitation.
+				</div>
+			</div>
+		</dl>
+		<dl class="w-full max-w-lg">
+			<div class="grid sm:px-6">
+				<dt class="text-sm font-normal text-gray-500 sm:self-center">
+					<label for="email">Coworker's Email</label>
+				</dt>
+				<dd class="mt-1 text-gray-900">
+					<input id="email" name="email" type="email" autocomplete="off" required class="standard-form" />
+				</dd>
+			</div>
+		</dl>
+		<dl class="w-full max-w-lg">
+			<div class="grid sm:px-6">
+				<dt class="text-sm font-normal text-gray-500 sm:self-center">
+					<label for="first_name">Coworker's First Name</label>
+				</dt>
+				<dd class="mt-1 text-gray-900">
+					<input id="first_name" name="first_name" type="text" autocomplete="off" required class="standard-form" />
+				</dd>
+			</div>
+		</dl>
+		<dl class="w-full max-w-lg">
+			<div class="grid sm:px-6">
+				<dt class="text-sm font-normal text-gray-500 sm:self-center">
+					<label for="last_name">Coworker's Last Name</label>
+				</dt>
+				<dd class="mt-1 text-gray-900">
+					<input id="last_name" name="last_name" type="text" autocomplete="off" required class="standard-form" />
+				</dd>
+			</div>
+		</dl>
+		<dl class="w-full max-w-lg">
+			<div class="grid sm:px-6">
+				<dt class="text-sm font-normal text-gray-500 sm:self-center">
+					<label for="name">Role & Permissions</label>
+				</dt>
+				<select name="role" id="role" required class="standard-form">
+					<option value="0">Standard</option>
+					<option value="10">Admin</option>
+				</select>
+			</div>
+		</dl>
+		<dl class="w-full max-w-lg">
+			<div class="grid sm:px-6 mt-2">
+				<button disabled={$loading} type="submit" class="full-width-button"> Send Invite </button>
+			</div>
+		</dl>
+	</form>
+</Modal>
 
 <Modal trigger="new_source">
 	<div slot="title">
@@ -87,7 +208,7 @@
 		{#if $page.form?.error}
 			<dl class="w-full max-w-lg">
 				<div class="grid sm:px-6">
-					<div class="p-3 rounded-md border bg-red-50 border-red-500/50 text-red-700 text-sm">
+					<div class="p-3 rounded-sm border bg-red-50 border-red-500/50 text-red-700 text-sm">
 						{$page.form.error}
 					</div>
 				</div>
@@ -99,7 +220,7 @@
 				<dt class="text-sm font-normal text-gray-500 sm:self-center">
 					<label for="name">Name</label>
 				</dt>
-				<div class="mt-1.5 flex rounded-md shadow-sm">
+				<div class="mt-1.5 flex rounded-sm shadow-sm">
 					<input type="text" name="name" id="name" required class="standard-form" />
 				</div>
 			</div>
@@ -122,7 +243,7 @@
 		{#if $page.form?.error}
 			<dl class="w-full max-w-lg">
 				<div class="grid sm:px-6">
-					<div class="p-3 rounded-md border bg-red-50 border-red-500/50 text-red-700 text-sm">
+					<div class="p-3 rounded-sm border bg-red-50 border-red-500/50 text-red-700 text-sm">
 						{$page.form.error}
 					</div>
 				</div>
@@ -134,7 +255,7 @@
 				<dt class="text-sm font-normal text-gray-500 sm:self-center">
 					<label for="name">Name</label>
 				</dt>
-				<div class="mt-1.5 flex rounded-md shadow-sm">
+				<div class="mt-1.5 flex rounded-sm shadow-sm">
 					<input type="text" name="name" id="name" required class="standard-form" />
 				</div>
 			</div>

@@ -11,32 +11,37 @@ export interface Database {
     Tables: {
       accounts: {
         Row: {
+          accepted_invite: boolean
           created_at: string
           email: string
-          first_name: string | null
-          id: number
-          last_name: string | null
+          first_name: string
+          id: string
+          last_name: string
+          role: number
         }
         Insert: {
+          accepted_invite?: boolean
           created_at?: string
           email: string
-          first_name?: string | null
-          id?: number
-          last_name?: string | null
+          first_name: string
+          id?: string
+          last_name: string
+          role?: number
         }
         Update: {
+          accepted_invite?: boolean
           created_at?: string
           email?: string
-          first_name?: string | null
-          id?: number
-          last_name?: string | null
+          first_name?: string
+          id?: string
+          last_name?: string
+          role?: number
         }
         Relationships: []
       }
       campaigns: {
         Row: {
           created_at: string
-          generated_url: string
           id: number
           last_updated: string | null
           medium: number
@@ -46,7 +51,6 @@ export interface Database {
         }
         Insert: {
           created_at?: string
-          generated_url: string
           id?: number
           last_updated?: string | null
           medium: number
@@ -56,7 +60,6 @@ export interface Database {
         }
         Update: {
           created_at?: string
-          generated_url?: string
           id?: number
           last_updated?: string | null
           medium?: number
@@ -94,6 +97,33 @@ export interface Database {
           created_at?: string
           id?: number
           name?: string
+        }
+        Relationships: []
+      }
+      requests: {
+        Row: {
+          accepted: boolean
+          created_at: string
+          email: string
+          first_name: string
+          id: number
+          last_name: string
+        }
+        Insert: {
+          accepted?: boolean
+          created_at?: string
+          email: string
+          first_name: string
+          id?: number
+          last_name: string
+        }
+        Update: {
+          accepted?: boolean
+          created_at?: string
+          email?: string
+          first_name?: string
+          id?: number
+          last_name?: string
         }
         Relationships: []
       }

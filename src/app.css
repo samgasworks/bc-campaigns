@@ -6,6 +6,10 @@ body {
 	font-family: Lexend Deca, ui-sans-serif, system-ui;
 }
 
+body {
+	@apply selection:bg-yellow-200 selection:text-yellow-900
+}
+
 .standard-form {
 	@apply block w-full border border-gray-300 focus:ring-blue-500 focus:border-blue-500 rounded-sm text-sm font-normal;
 }
@@ -16,6 +20,10 @@ body {
 
 .primary-button {
 	@apply px-4 py-2 text-white bg-blue-500 hover:bg-blue-400 rounded-sm text-sm font-medium ;
+}
+
+.secondary-button {
+	@apply px-4 py-2 text-gray-700 bg-blue-200 hover:bg-blue-100 rounded-sm text-sm font-medium ;
 }
 
 .delete-button {

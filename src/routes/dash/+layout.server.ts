@@ -8,11 +8,6 @@ export const load: LayoutServerLoad = async (event) => {
 		throw redirect(307, '/login');
 	}
 
-	const { data: campaigns } = await supabaseClient
-		.from('campaigns')
-		.select('*')
-		.order('created_at', { ascending: false });
-
 	const { data: sources } = await supabaseClient
 		.from('sources')
 		.select('*')
@@ -24,7 +19,6 @@ export const load: LayoutServerLoad = async (event) => {
 		.order('created_at', { ascending: false });
 
 	return {
-		campaigns: campaigns,
 		sources: sources,
 		mediums: mediums,
 	}
