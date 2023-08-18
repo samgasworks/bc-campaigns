@@ -4,7 +4,7 @@
 	import { page } from '$app/stores';
 	import { fade, fly } from 'svelte/transition';
 	import { cubicInOut } from 'svelte/easing';
-	import { beforeNavigate } from '$app/navigation';
+	import { beforeNavigate, afterNavigate } from '$app/navigation';
 	import { currentDropDown, currentModal, loading } from '$lib/utils';
 
 	const handleSubmit: SubmitFunction = () => {
@@ -20,6 +20,10 @@
 		$currentDropDown = null;
 		$currentModal = null;
 		$loading = true;
+	});
+
+	afterNavigate(async ({ from, to }) => {
+		$loading = false;
 	});
 </script>
 

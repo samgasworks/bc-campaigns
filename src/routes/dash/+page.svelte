@@ -1,4 +1,5 @@
 <script lang="ts">
+	import type { PageData } from './$types';
 	import type { SubmitFunction } from '@sveltejs/kit';
 	import { page } from '$app/stores';
 	import Container from '$lib/Container.svelte';
@@ -6,6 +7,9 @@
 	import { currentModal, loading } from '$lib/utils';
 	import { applyAction, enhance } from '$app/forms';
 	import { invalidate } from '$app/navigation';
+
+	export let data: PageData
+
 
 	const handleSubmit: SubmitFunction = () => {
 		$loading = true;
@@ -66,7 +70,16 @@
 					<label for="source">Source</label>
 				</dt>
 				<div class="mt-1.5 flex rounded-md shadow-sm">
-					<input type="text" name="source" id="source" required class="standard-form" />
+					<select name="source" id="source" required class="standard-form">
+						<option disabled selected value=""></option>
+						{#if data.sources && data.sources.length > 0}
+						{#each data.sources as source}
+						<option value={source.id}>{source.name}</option>
+						{/each}
+						{:else}
+						<option disabled selected value="">No Sources</option>
+						{/if}
+					</select>
 				</div>
 			</div>
 		</div>
@@ -76,7 +89,16 @@
 					<label for="medium">Medium</label>
 				</dt>
 				<div class="mt-1.5 flex rounded-md shadow-sm">
-					<input type="text" name="medium" id="medium" required class="standard-form" />
+					<select name="medium" id="medium" required class="standard-form">
+						<option disabled selected value=""></option>
+						{#if data.mediums && data.mediums.length > 0}
+						{#each data.mediums as medium}
+						<option value={medium.id}>{medium.name}</option>
+						{/each}
+						{:else}
+						<option disabled selected value="">No Mediums</option>
+						{/if}
+					</select>
 				</div>
 			</div>
 		</div>
