@@ -4,6 +4,7 @@
 	import { currentModal } from './utils';
 
 	export let trigger = '';
+	export let closeable = true;
 </script>
 
 {#if $currentModal === trigger}
@@ -11,8 +12,8 @@
 		<div class="flex items-center sm:items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
 			<div
 				transition:fade|local={{ delay: 0, duration: 200, easing: cubicInOut }}
-				on:click={() => ($currentModal = null)}
-				class="fixed inset-0 bg-black bg-opacity-40 transition-opacity cursor-pointer"
+				on:click={() => (closeable ? $currentModal = null : null)}
+				class="{closeable ? 'cursor-pointer' : ''}fixed inset-0 bg-black bg-opacity-40 transition-opacity"
 				aria-hidden="true"
 			/>
 
@@ -23,6 +24,7 @@
 				class="inline-block align-bottom border border-gray-300 bg-white rounded-sm text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle max-w-lg w-full"
 			>
 				<div class="block absolute top-0 right-0 pt-3.5 pr-4">
+					{#if closeable}
 					<button on:click={() => ($currentModal = null)} type="button" class="bg-white text-gray-400 hover:text-black hover:bg-blue-100 hover:shadow rounded-sm p-1 focus:outline-none">
 						<span class="sr-only">Close</span>
 						<!-- Heroicon name: outline/x -->
@@ -30,6 +32,7 @@
 							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
 						</svg>
 					</button>
+					{/if}
 				</div>
 				<div class="flex items-center justify-center p-4 sm:px-6">
 					<h3 class="text-lg leading-6 font-medium text-black" id="modal-title">

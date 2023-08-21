@@ -85,7 +85,47 @@
 		{#if $page.form?.error}
 			<dl class="w-full max-w-lg">
 				<div class="grid sm:px-6">
-					<div class="p-3 rounded-md border bg-red-50 border-red-500/50 text-red-700 text-sm font-medium">
+					<div class="p-3 rounded-sm border bg-red-50 border-red-500/50 text-red-700 text-sm font-medium">
+						{$page.form.error}
+					</div>
+				</div>
+			</dl>
+		{/if}
+		<dl class="w-full max-w-lg">
+			<div class="grid sm:px-6">
+				<dt class="text-sm font-normal text-gray-500 sm:self-center">
+					<label for="password">Password</label>
+				</dt>
+				<dd class="mt-1 text-gray-900">
+					<input id="password" name="password" type="password" required class="standard-form font-bold text-lg" />
+				</dd>
+			</div>
+		</dl>
+		<dl class="w-full max-w-lg">
+			<div class="grid sm:px-6">
+				<dt class="text-sm font-normal text-gray-500 sm:self-center">
+					<label for="confirm">Confirm Password</label>
+				</dt>
+				<dd class="mt-1 text-gray-900">
+					<input id="confirm" name="confirm" type="password" required class="standard-form" />
+				</dd>
+			</div>
+		</dl>
+		<dl class="w-full max-w-lg">
+			<div class="grid sm:px-6 mt-2">
+				<button disabled={$loading} type="submit" class="full-width-button"> Save Password </button>
+			</div>
+		</dl>
+	</form>
+</Modal>
+
+<Modal trigger="reset_password">
+	<span slot="title"> Enter a New Password </span>
+	<form method="POST" action="?/resetPassword" use:enhance={handleSubmit} slot="form" class="px-4 py-6 flex flex-col items-center justify-center space-y-4">
+		{#if $page.form?.error}
+			<dl class="w-full max-w-lg">
+				<div class="grid sm:px-6">
+					<div class="p-3 rounded-sm border bg-red-50 border-red-500/50 text-red-700 text-sm font-medium">
 						{$page.form.error}
 					</div>
 				</div>

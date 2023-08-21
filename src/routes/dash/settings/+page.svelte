@@ -104,7 +104,7 @@
 				{/if}
 			</div>
 			<div class="flex items-center justify-end space-x-2 md:self-center">
-				{#if $page.data.session?.user.email !== user.email}
+				{#if $page.data.session?.user.id !== user.id}
 				<button on:click={() => ($currentModal = `${user.id}_remove_user`)} class="delete-button">
 					Remove
 				</button>
@@ -112,16 +112,13 @@
 				{#if expired && !user.accepted_invite}
 				<form method="POST" action="?/resendInvite" use:enhance={handleSubmit}>
 					<input type="hidden" name="user_id" value={user.id} />
-					<input type="hidden" name="first_name" value={user.first_name} />
-					<input type="hidden" name="last_name" value={user.last_name} />
 					<input type="hidden" name="email" value={user.email} />
-					<input type="hidden" name="role" value={user.role} />
 					<button type="submit" disabled={$loading} class="text-black max-w-max primary-button">
 						Resend Invite
 					</button>
 				</form>
 				{:else}
-				<button on:click={() => ($currentModal = `${user.id}_update`)} class="secondary-button">
+				<button on:click={() => ($currentModal = `${user.id}_update_user`)} class="secondary-button">
 					Update
 				</button>
 				{/if}
@@ -131,6 +128,125 @@
 		{/if}
 	</div>
 </Container>
+
+{#if data.users && data.users.length > 0}
+{#each data.users as user}
+<Modal trigger={`${user.id}_update_user`}>
+	<span slot="title" class="flex items-center justify-center space-x-2">
+			<span>Edit {user.email}</span>
+		{#if $page.data.session?.user.email === user.email}
+			<div class="text-sm font-medium text-amber-600/50 bg-amber-100 px-2 py-1 rounded-sm flex items-center space-x-1.5 shadow-sm">
+				<span class="text-amber-700">You</span>
+			</div>
+		{/if}
+	</span>
+	<form method="POST" action="?/updateUser" use:enhance={handleSubmit} slot="form" class="px-4 py-6 flex flex-col items-center justify-center space-y-4">
+		{#if $page.form?.error}
+			<dl class="w-full max-w-lg">
+				<div class="grid sm:px-6">
+					<div class="p-3 rounded-sm border bg-red-50 border-red-500/50 text-red-700 text-sm font-medium">
+						{$page.form.error}
+					</div>
+				</div>
+			</dl>
+		{/if}
+		<input type="hidden" name="user_id" id="user_id" value={user.id} />
+		<dl class="w-full max-w-lg">
+			<div class="grid sm:px-6">
+				<dt class="text-sm font-normal text-gray-500 sm:self-center">
+					<label for="email">Coworker's Email</label>
+				</dt>
+				<dd class="mt-1 text-gray-900">
+					<input disabled value={user.email} id="email" name="email" type="email" required class="block w-full border border-gray-200 rounded-sm shadow-sm text-sm font-medium bg-gray-50"
+					/>
+				</dd>
+			</div>
+		</dl>
+		<dl class="w-full max-w-lg">
+			<div class="grid sm:px-6">
+				<dt class="text-sm font-normal text-gray-500 sm:self-center">
+					<label for="first_name">Coworker's First Name</label>
+				</dt>
+				<dd class="mt-1 text-gray-900">
+					<input value={user.first_name} id="first_name" name="first_name" type="text" autocomplete="off" required class="standard-form" />
+				</dd>
+			</div>
+		</dl>
+		<dl class="w-full max-w-lg">
+			<div class="grid sm:px-6">
+				<dt class="text-sm font-normal text-gray-500 sm:self-center">
+					<label for="last_name">Coworker's Last Name</label>
+				</dt>
+				<dd class="mt-1 text-gray-900">
+					<input value={user.last_name} id="last_name" name="last_name" type="text" autocomplete="off" required class="standard-form" />
+				</dd>
+			</div>
+		</dl>
+		<dl class="w-full max-w-lg">
+			<div class="grid sm:px-6">
+				<dt class="text-sm font-normal text-gray-500 sm:self-center">
+					<label for="name">Role & Permissions</label>
+				</dt>
+				<select value={user.role} name="role" id="role" required class="standard-form">
+					<option value={0}>Standard</option>
+					<option value={10}>Admin</option>
+				</select>
+			</div>
+		</dl>
+		<dl class="w-full max-w-lg">
+			<div class="grid sm:px-6 mt-2">
+				<button disabled={$loading} type="submit" class="full-width-button"> Update User </button>
+			</div>
+		</dl>
+	</form>
+</Modal>
+<Modal trigger="{user.id}_remove_user">
+	<span slot="title">
+		<span>Remove {user.email}</span>
+	</span>
+	<form method="POST" action="?/removeUser" use:enhance={handleSubmit} slot="form" class="px-4 py-6 flex flex-col items-center justify-center space-y-4">
+		{#if $page.form?.error}
+			<dl class="w-full max-w-lg">
+				<div class="grid sm:px-6">
+					<div class="p-3 rounded-sm border bg-red-50 border-red-500/50 text-red-700 text-sm font-medium">
+						The name you typed does not match
+					</div>
+				</div>
+			</dl>
+		{/if}
+		<input hidden name="user_id" value={user.id} />
+		<dl class="w-full max-w-lg">
+			<div class="grid sm:px-6">
+				<div class="text-center mb-2 p-3 rounded-sm border bg-gray-50 border-gray5-200 text-gray-700 text-sm font-light space-y-2">
+					<p>Are you sure? This will delete {user.email}</p>
+				</div>
+			</div>
+		</dl>
+		<dl class="w-full max-w-lg">
+			<div class="grid sm:px-6">
+				<dt class="text-sm font-normal text-gray-500 sm:self-center">
+					<label for="confirm">
+						Type 
+						<span class="text-gray-700 font-medium">delete</span>
+						then click the blue button
+					</label>
+				</dt>
+				<dd class="mt-1 text-gray-900">
+					<input type="email" id="confirm" name="confirm" required class="standard-form" />
+				</dd>
+			</div>
+		</dl>
+		<dl class="w-full max-w-lg">
+			<div class="grid sm:px-6 mt-2">
+				<button disabled={$loading} type="submit" class="delete-button">
+					Remove
+				</button>
+			</div>
+		</dl>
+	</form>
+</Modal>
+{/each}
+{/if}
 
 <Modal trigger="send_invite">
 	<span slot="title"> Add Team Member </span>

@@ -21,7 +21,7 @@ export const load: PageServerLoad = async (event) => {
 
 	return {
 		account: account,
-		reset_password: reset_password
+		reset_password: reset_password,
 	}
 }
 
@@ -79,6 +79,7 @@ export const actions: Actions = {
 		});
 
 		if (error) {
+			console.log(error)
 			if (error instanceof AuthApiError && error.status === 400) {
 				return fail(400, {
 					error: 'Invalid credentials.'
