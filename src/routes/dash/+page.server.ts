@@ -173,16 +173,23 @@ export const actions: Actions = {
 		}
 
 		// update the user's password
-		const { error } = await supabaseClient.auth.updateUser({
+		const { error: authError } = await supabaseClient.auth.updateUser({
 			password: password,
 			data: {
 				pw_set: true
 			}
 		});
 
-		if (error) {
-			console.log(error)
-			if (error instanceof AuthApiError && error.status === 400) {
+		const { error: accountUpdateError } = await supabaseClient
+			.from('accounts')
+			.update({
+				accepted_invite: true
+			})
+			.eq('id', session?.user.id);
+		
+
+		if (authError || accountUpdateError) {
+			if (authError instanceof AuthApiError && authError.status === 400) {
 				return fail(400, {
 					error: 'Invalid credentials.'
 				});
