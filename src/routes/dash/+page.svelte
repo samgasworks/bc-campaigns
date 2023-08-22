@@ -22,20 +22,28 @@
 			if (result.type === 'success') {
 				await invalidate('supabase:auth');
 				$currentModal = null;
-				if (action.search.indexOf('resetPassword') > 0) {
-					goto('/dash/account');
+				if (action.search.indexOf('setPassword') > 0) {
+					goto('/dash');
 				}
 			}
 			await applyAction(result);
 		};
 	};
 
+	function setPassword() {
+		if (data.set_password || $page.url.searchParams.get('set') === 'password') {
+			$currentModal = 'set_password';
+		}
+	}
+
 	onMount(async () => {
-		if (data.set_password) {
+		console.log(data.session?.user.user_metadata	)
+		if (data.set_password || $page.url.searchParams.get('set') === 'password') {
 			$currentModal = 'set_password';
 		}
 	});
 
+	$: $page.url, setPassword();
 </script>
 
 <svelte:head>

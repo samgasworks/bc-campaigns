@@ -39,7 +39,7 @@
 
 	onMount(async () => {
 		console.log(data.session?.user.user_metadata	)
-		if (data.reset_password) {
+		if (data.reset_password || $page.url.searchParams.get('reset') === 'password') {
 			$currentModal = 'reset_password';
 		}
 	});
