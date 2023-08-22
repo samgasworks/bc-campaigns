@@ -31,12 +31,20 @@
 		};
 	};
 
+	function resetPassword() {
+		if (data.reset_password || $page.url.searchParams.get('reset') === 'password') {
+			$currentModal = 'reset_password';
+		}
+	}
+
 	onMount(async () => {
 		console.log(data.session?.user.user_metadata	)
 		if (data.reset_password) {
 			$currentModal = 'reset_password';
 		}
 	});
+
+	$: $page.url, resetPassword();
 </script>
 
 <svelte:head>
