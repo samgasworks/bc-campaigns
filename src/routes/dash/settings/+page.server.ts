@@ -21,7 +21,6 @@ export const load: PageServerLoad = async (event) => {
 		.from('requests')
 		.select('*');
 
-	console.log(users, requests)
 	return {
 		users: users,
 		requests: requests,

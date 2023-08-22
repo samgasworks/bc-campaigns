@@ -32,7 +32,7 @@ export const actions: Actions = {
 
 		if (session && session.user && session.user.email) {
 			supabaseClient.auth.resetPasswordForEmail(session.user.email, {
-				redirectTo: `${url.origin}/dash/account?reset=password`
+				redirectTo: `${url.origin}/dash?reset=password`
 			});
 
 			return { success: true };

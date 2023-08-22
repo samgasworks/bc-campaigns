@@ -7,7 +7,7 @@
 	import { page } from '$app/stores';
 	import { currentModal, loading } from '$lib/utils';
 	import { applyAction, enhance } from '$app/forms';
-	import { invalidate } from '$app/navigation';
+	import { invalidate, goto } from '$app/navigation';
 
 	export let data: PageData
 
@@ -23,12 +23,16 @@
 				}
 				await invalidate('supabase:auth');
 				$currentModal = null;
+				if (action.search.indexOf('resetPassword') > 0) {
+					goto('/dash/account');
+				}
 			}
 			await applyAction(result);
 		};
 	};
 
 	onMount(async () => {
+		console.log(data.session?.user.user_metadata	)
 		if (data.reset_password) {
 			$currentModal = 'reset_password';
 		}

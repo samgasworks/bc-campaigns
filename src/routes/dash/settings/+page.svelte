@@ -80,12 +80,12 @@
 		{#if data.users}
 		{#each data.users as user}
 		{@const expired = Date.now() - new Date(user.created_at).getTime() > 86400000}
-		<div class="px-6 py-4 flex items-center justify-between">
-			<div class="{expired && user.accepted_invite ? 'text-red-800/75' : 'text-gray-900'}">
+		<div class="px-6 py-4 grid grid-cols-3 items-center">
+			<div class="{expired && !user.accepted_invite ? 'text-red-800/75' : 'text-gray-900'}">
 				{user.first_name} {user.last_name}
 			</div>
 			<div class="flex items-center space-x-2 md:self-center">
-				<div class="{expired && user.accepted_invite ? 'text-red-800/75' : 'text-gray-900'}">
+				<div class="{expired && !user.accepted_invite ? 'text-red-800/75' : 'text-gray-900'}">
 					{user.email}
 				</div>
 				{#if expired && !user.accepted_invite}

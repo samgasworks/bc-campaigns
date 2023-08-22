@@ -6,7 +6,7 @@
 	import Modal from '$lib/Modal.svelte';
 	import { currentModal, loading } from '$lib/utils';
 	import { applyAction, enhance } from '$app/forms';
-	import { invalidate } from '$app/navigation';
+	import { invalidate, goto } from '$app/navigation';
 	import { onMount } from 'svelte';
 
 	export let data: PageData
@@ -15,13 +15,16 @@
 		return new Array(width + 1 - (number + '').length).join('0') + number;
 	}
 
-	const handleSubmit: SubmitFunction = () => {
+	const handleSubmit: SubmitFunction = ({ action }) => {
 		$loading = true;
 		return async ({ result }) => {
 			$loading = false;
 			if (result.type === 'success') {
 				await invalidate('supabase:auth');
 				$currentModal = null;
+				if (action.search.indexOf('resetPassword') > 0) {
+					goto('/dash/account');
+				}
 			}
 			await applyAction(result);
 		};
