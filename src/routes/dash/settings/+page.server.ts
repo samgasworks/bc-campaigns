@@ -158,7 +158,7 @@ export const actions: Actions = {
 		}
 
 		try {
-			const inviteResp = await fetch('/invite', {
+			const inviteResp = await fetch('/admin/invite', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({ 
@@ -210,7 +210,7 @@ export const actions: Actions = {
 			.eq('id', user_id);
 
 		try {
-			const inviteResp = await fetch('/invite', {
+			const inviteResp = await fetch('/admin/invite', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({ 
@@ -279,7 +279,21 @@ export const actions: Actions = {
 			.from('accounts')
 			.delete()
 			.eq('id', user_id);
+		
+		try {
+			const inviteResp = await fetch('/admin/delete', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ 
+					user_id: user_id
+				})
+			});
 
-		return { success: true };
+			if (inviteResp.ok) {
+				return { success: true };
+			}
+		} catch (err) {
+			throw error(500, 'Server invite error');
+		}			  
 	}
 };

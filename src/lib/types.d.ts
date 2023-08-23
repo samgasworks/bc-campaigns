@@ -2,6 +2,13 @@ export type EmailInvite = {
 	email: string;
 }
 
+
+export type DeleteRequest = {
+	user_id: string;
+}
+
+
+
 export type AuthUserResponse = {
 	user?: {
 	  id: string;
