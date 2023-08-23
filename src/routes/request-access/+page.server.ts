@@ -48,6 +48,17 @@ export const actions: Actions = {
 			});
 		}
 
+		const { data: existingUser, error: existingUserError } = await supabaseClient
+			.from('accounts')
+			.select('*')
+			.eq('email', email);
+		
+		if (existingUser && existingUser.length > 0) {
+			return fail(500, {
+				error: 'You already have an account. Please login or contact an admin for assistance.'
+			});
+		}
+
 		const { error: supabaseError } = await supabaseClient
 			.from('requests')
 			.insert({

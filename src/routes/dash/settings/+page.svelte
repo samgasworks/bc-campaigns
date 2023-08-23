@@ -163,6 +163,47 @@
 	</div>
 </Container>
 
+<Container>
+	<div slot="title" class="flex justify-between items-center">
+		<div class="text-xl font-semibold text-gray-900">
+			Requests
+		</div>
+	</div> 
+	<div slot="content" class="divide-y divide-gray-200 text-sm">
+		{#if data.requests}
+		{#each data.requests as user}
+		<div class="px-6 py-4 grid grid-cols-3 items-center">
+			<div class="text-gray-900">
+				{user.first_name} {user.last_name}
+			</div>
+			<div class="flex items-center space-x-2 md:self-center">
+				<div class="text-gray-900">
+					{user.email}
+				</div>
+			</div>
+			<div class="flex items-center justify-end space-x-2 md:self-center">
+				<form method="POST" action="?/denyRequest" use:enhance={handleSubmit}>
+					<input type="hidden" name="user_id" value={user.id} />
+					<button type="submit" disabled={$loading} class="delete-button">
+						Deny
+					</button>
+				</form>
+				<form method="POST" action="?/approveRequest" use:enhance={handleSubmit}>
+					<input type="hidden" name="user_id" value={user.id} />
+					<input type="hidden" name="first_name" value={user.first_name} />
+					<input type="hidden" name="last_name" value={user.last_name} />
+					<input type="hidden" name="email" value={user.email} />
+					<button type="submit" disabled={$loading} class="secondary-button">
+						Approve
+					</button>
+				</form>
+			</div>
+		</div>
+		{/each}
+		{/if}
+	</div>
+</Container>
+
 {#if data.sources}
 {#each data.sources as source}
 <Modal trigger="edit_{source.id}">

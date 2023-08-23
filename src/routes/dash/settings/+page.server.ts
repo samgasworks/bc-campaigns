@@ -366,5 +366,86 @@ export const actions: Actions = {
 		} catch (err) {
 			throw error(500, 'Server invite error');
 		}			  
+	},
+	denyRequest: async (event) => {
+		const { request, fetch } = event;
+		const { session, supabaseClient } = await getSupabase(event);
+		if (!session) {
+			// the user is not signed in
+			throw error(403, { message: 'Unauthorized' });
+		}
+
+		const formData = await request.formData();
+		const user_id = formData.get('user_id') as string;
+
+
+		const { error: u_error } = await supabaseClient
+			.from('requests')
+			.delete()
+			.eq('id', user_id);
+
+		if (u_error) {
+			throw error(500, u_error.message);
+		}
+
+		return { success: true };
+	},
+	approveRequest: async (event) => {
+		const { request, fetch } = event;
+		const { session, supabaseClient } = await getSupabase(event);
+		if (!session) {
+			// the user is not signed in
+			throw error(403, { message: 'Unauthorized' });
+		}
+
+		const formData = await request.formData();
+		const user_id = formData.get('user_id') as string;
+		const first_name = formData.get('first_name') as string;
+		const last_name = formData.get('last_name') as string;
+		const email = formData.get('email') as string;
+
+		const { error: u_error } = await supabaseClient
+			.from('requests')
+			.delete()
+			.eq('id', user_id);
+
+		if (u_error) {
+			throw error(500, u_error.message);
+		}
+
+		try {
+			const inviteResp = await fetch('/admin/invite', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ 
+					email: email
+				})
+			});
+
+			const invitedUser: AuthUserResponse = await inviteResp.json();
+			if (invitedUser.user && invitedUser.user.id && invitedUser.user.email) {
+
+				const { error: accountError } = await supabaseClient
+					.from('accounts')
+					.insert({
+						id: invitedUser.user.id,
+						first_name: first_name,
+						last_name: last_name,
+						email: invitedUser.user.email,
+						role: 1,
+						accepted_invite: false
+					});
+
+				if (accountError) {
+					throw error(500, accountError.message);
+				}
+
+				return { success: true };
+			}
+		} catch (err) {
+			throw error(500, 'Server invite error');
+		}
+
+		return { success: true };
 	}
 };
