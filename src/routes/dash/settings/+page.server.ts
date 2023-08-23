@@ -432,7 +432,7 @@ export const actions: Actions = {
 						first_name: first_name,
 						last_name: last_name,
 						email: invitedUser.user.email,
-						role: 1,
+						role: 0,
 						accepted_invite: false
 					});
 
