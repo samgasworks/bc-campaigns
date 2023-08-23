@@ -326,7 +326,7 @@ export const actions: Actions = {
 		return { success: true };
 	},
 	removeUser: async (event) => {
-		const { request } = event;
+		const { request, fetch } = event;
 		const { session, supabaseClient } = await getSupabase(event);
 		if (!session) {
 			// the user is not signed in
