@@ -22,6 +22,10 @@
 			if (result.type === 'success') {
 				await invalidate('supabase:auth');
 				$currentModal = null;
+				data.set_password = false;
+				if (action.search.indexOf('setPassword') > 0) {
+					goto('/dash');
+				}
 			}
 			await applyAction(result);
 		};
