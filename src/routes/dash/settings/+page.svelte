@@ -39,8 +39,25 @@
 	<div slot="content" class="divide-y divide-gray-200 text-sm">
 		{#if data.sources}
 		{#each data.sources as source}
-		<div class="px-6 py-4">
-			{source.name}
+		<div class="px-6 py-4 flex items-center justify-between">
+			<div>
+				{source.name}
+			</div>
+			{#if $page.data.account?.role > 5}
+			<div class="flex justify-end space-x-4">
+				<button on:click={() => $currentModal = `edit_${source.id}`} class="text-blue-500/50 hover:text-blue-500">
+					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+						<path d="M5.433 13.917l1.262-3.155A4 4 0 017.58 9.42l6.92-6.918a2.121 2.121 0 013 3l-6.92 6.918c-.383.383-.84.685-1.343.886l-3.154 1.262a.5.5 0 01-.65-.65z" />
+						<path d="M3.5 5.75c0-.69.56-1.25 1.25-1.25H10A.75.75 0 0010 3H4.75A2.75 2.75 0 002 5.75v9.5A2.75 2.75 0 004.75 18h9.5A2.75 2.75 0 0017 15.25V10a.75.75 0 00-1.5 0v5.25c0 .69-.56 1.25-1.25 1.25h-9.5c-.69 0-1.25-.56-1.25-1.25v-9.5z" />
+					</svg>															
+				</button>
+				<button on:click={() => $currentModal = `delete_${source.id}`} class="text-red-500/50 hover:text-red-500">
+					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+						<path d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z" />
+					</svg>							  
+				</button>
+			</div>
+			{/if}
 		</div>
 		{/each}
 		{/if}
@@ -59,8 +76,25 @@
 	<div slot="content" class="divide-y divide-gray-200 text-sm">
 		{#if data.mediums}
 		{#each data.mediums as medium}
-		<div class="px-6 py-4">
-			{medium.name}
+		<div class="px-6 py-4 flex items-center justify-between">
+			<div>
+				{medium.name}
+			</div>
+			{#if $page.data.account?.role > 5}
+			<div class="flex justify-end space-x-4">
+				<button on:click={() => $currentModal = `edit_${medium.id}`} class="text-blue-500/50 hover:text-blue-500">
+					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+						<path d="M5.433 13.917l1.262-3.155A4 4 0 017.58 9.42l6.92-6.918a2.121 2.121 0 013 3l-6.92 6.918c-.383.383-.84.685-1.343.886l-3.154 1.262a.5.5 0 01-.65-.65z" />
+						<path d="M3.5 5.75c0-.69.56-1.25 1.25-1.25H10A.75.75 0 0010 3H4.75A2.75 2.75 0 002 5.75v9.5A2.75 2.75 0 004.75 18h9.5A2.75 2.75 0 0017 15.25V10a.75.75 0 00-1.5 0v5.25c0 .69-.56 1.25-1.25 1.25h-9.5c-.69 0-1.25-.56-1.25-1.25v-9.5z" />
+					</svg>															
+				</button>
+				<button on:click={() => $currentModal = `delete_${medium.id}`} class="text-red-500/50 hover:text-red-500">
+					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+						<path d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z" />
+					</svg>							  
+				</button>
+			</div>
+			{/if}
 		</div>
 		{/each}
 		{/if}
@@ -128,6 +162,156 @@
 		{/if}
 	</div>
 </Container>
+
+{#if data.sources}
+{#each data.sources as source}
+<Modal trigger="edit_{source.id}">
+	<div slot="title">
+		Edit {source.name}
+	</div> 
+	<form action="?/edit" method="POST" use:enhance={handleSubmit} slot="form" class="px-4 py-8 flex flex-col items-center justify-center space-y-4">
+		{#if $page.form?.error}
+			<dl class="w-full max-w-lg">
+				<div class="grid sm:px-6">
+					<div class="p-3 rounded-md border bg-red-50 border-red-500/50 text-red-700 text-sm font-medium">
+						{$page.form.error}
+					</div>
+				</div>
+			</dl>
+		{/if}
+		<input type="hidden" name="table" value="sources" />
+		<input type="hidden" name="id" value={source.id} />
+		<div class="w-full max-w-lg">
+			<div class="grid sm:px-6">
+				<dt class="text-sm font-normal text-gray-500 sm:self-center">
+					<label for="name">Name</label>
+				</dt>
+				<div class="mt-1.5 flex rounded-md shadow-sm">
+					<input type="text" value={source.name} name="name" id="name" required class="standard-form" />
+				</div>
+			</div>
+		</div>
+		<dl class="w-full max-w-lg">
+			<div class="grid sm:px-6 mt-2">
+				<button disabled={$loading} type="submit" class="full-width-button">
+					{$loading ? 'Loading...' : 'Edit Medium'}
+				</button>
+			</div>
+		</dl>
+	</form>
+</Modal>
+<Modal trigger="delete_{source.id}">
+	<div slot="title">
+		Delete {source.name}
+	</div> 
+	<form action="?/delete" method="POST" use:enhance={handleSubmit} slot="form" class="px-4 py-8 flex flex-col items-center justify-center space-y-4">
+		{#if $page.form?.error}
+			<dl class="w-full max-w-lg">
+				<div class="grid sm:px-6">
+					<div class="p-3 rounded-md border bg-red-50 border-red-500/50 text-red-700 text-sm font-medium">
+						{$page.form.error}
+					</div>
+				</div>
+			</dl>
+		{/if}
+		<input type="hidden" name="table" value="sources" />
+		<input type="hidden" name="id" value={source.id} />
+		<div class="w-full max-w-lg">
+			<div class="grid sm:px-6">
+				<dt class="text-sm font-normal text-gray-500 sm:self-center">
+					<label for="confirm">To confirm, type <span class="font-medium text-gray-700">delete</span> and click the blue button</label>
+				</dt>
+				<div class="mt-1.5 flex rounded-md shadow-sm">
+					<input type="text" name="confirm" id="confirm" required class="standard-form" />
+				</div>
+			</div>
+		</div>
+		<dl class="w-full max-w-lg">
+			<div class="grid sm:px-6 mt-2">
+				<button disabled={$loading} type="submit" class="full-width-button">
+					{$loading ? 'Loading...' : 'Delete Source'}
+				</button>
+			</div>
+		</dl>
+	</form>
+</Modal>
+{/each}
+{/if}
+
+{#if data.mediums}
+{#each data.mediums as medium}
+<Modal trigger="edit_{medium.id}">
+	<div slot="title">
+		Edit {medium.name}
+	</div> 
+	<form action="?/edit" method="POST" use:enhance={handleSubmit} slot="form" class="px-4 py-8 flex flex-col items-center justify-center space-y-4">
+		{#if $page.form?.error}
+			<dl class="w-full max-w-lg">
+				<div class="grid sm:px-6">
+					<div class="p-3 rounded-md border bg-red-50 border-red-500/50 text-red-700 text-sm font-medium">
+						{$page.form.error}
+					</div>
+				</div>
+			</dl>
+		{/if}
+		<input type="hidden" name="table" value="mediums" />
+		<input type="hidden" name="id" value={medium.id} />
+		<div class="w-full max-w-lg">
+			<div class="grid sm:px-6">
+				<dt class="text-sm font-normal text-gray-500 sm:self-center">
+					<label for="name">Name</label>
+				</dt>
+				<div class="mt-1.5 flex rounded-md shadow-sm">
+					<input type="text" value={medium.name} name="name" id="name" required class="standard-form" />
+				</div>
+			</div>
+		</div>
+		<dl class="w-full max-w-lg">
+			<div class="grid sm:px-6 mt-2">
+				<button disabled={$loading} type="submit" class="full-width-button">
+					{$loading ? 'Loading...' : 'Edit Medium'}
+				</button>
+			</div>
+		</dl>
+	</form>
+</Modal>
+<Modal trigger="delete_{medium.id}">
+	<div slot="title">
+		Delete {medium.name}
+	</div> 
+	<form action="?/delete" method="POST" use:enhance={handleSubmit} slot="form" class="px-4 py-8 flex flex-col items-center justify-center space-y-4">
+		{#if $page.form?.error}
+			<dl class="w-full max-w-lg">
+				<div class="grid sm:px-6">
+					<div class="p-3 rounded-md border bg-red-50 border-red-500/50 text-red-700 text-sm font-medium">
+						{$page.form.error}
+					</div>
+				</div>
+			</dl>
+		{/if}
+		<input type="hidden" name="table" value="mediums" />
+		<input type="hidden" name="id" value={medium.id} />
+		<div class="w-full max-w-lg">
+			<div class="grid sm:px-6">
+				<dt class="text-sm font-normal text-gray-500 sm:self-center">
+					<label for="confirm">To confirm, type <span class="font-medium text-gray-700">delete</span> and click the blue button</label>
+				</dt>
+				<div class="mt-1.5 flex rounded-md shadow-sm">
+					<input type="text" name="confirm" id="confirm" required class="standard-form" />
+				</div>
+			</div>
+		</div>
+		<dl class="w-full max-w-lg">
+			<div class="grid sm:px-6 mt-2">
+				<button disabled={$loading} type="submit" class="full-width-button">
+					{$loading ? 'Loading...' : 'Delete Medium'}
+				</button>
+			</div>
+		</dl>
+	</form>
+</Modal>
+{/each}
+{/if}
 
 {#if data.users && data.users.length > 0}
 {#each data.users as user}
@@ -232,7 +416,7 @@
 					</label>
 				</dt>
 				<dd class="mt-1 text-gray-900">
-					<input type="email" id="confirm" name="confirm" required class="standard-form" />
+					<input type="text" id="confirm" name="confirm" required class="standard-form" />
 				</dd>
 			</div>
 		</dl>

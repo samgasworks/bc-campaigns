@@ -183,7 +183,9 @@
 						{/if}
 						{#if data.sources && data.sources.length > 0}
 						{#each data.sources as source}
+						{#if source.id !== campaign.source}
 						<option value={source.id}>{source.name}</option>
+						{/if}
 						{/each}
 						{:else}
 						<option disabled selected value="">No Sources</option>
@@ -206,7 +208,9 @@
 						{/if}
 						{#if data.mediums && data.mediums.length > 0}
 						{#each data.mediums as medium}
+						{#if medium.id !== campaign.medium}
 						<option value={medium.id}>{medium.name}</option>
+						{/if}
 						{/each}
 						{:else}
 						<option disabled selected value="">No Mediums</option>
@@ -228,7 +232,7 @@
 	<div slot="title">
 		Delete {campaign.name}
 	</div> 
-	<form action="?/edit" method="POST" use:enhance={handleSubmit} slot="form" class="px-4 py-8 flex flex-col items-center justify-center space-y-4">
+	<form action="?/delete" method="POST" use:enhance={handleSubmit} slot="form" class="px-4 py-8 flex flex-col items-center justify-center space-y-4">
 		{#if $page.form?.error}
 			<dl class="w-full max-w-lg">
 				<div class="grid sm:px-6">

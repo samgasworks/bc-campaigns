@@ -13,7 +13,6 @@ const supabaseService = createService(PUBLIC_SUPABASE_URL, SUPABASE_SERVICE_KEY,
 });
 
 export const POST: RequestHandler = async (event) => {
-	const { url } = event;
 	const { session } = await getSupabase(event);
 	if (!session) {
 		throw error(400, 'Not authorized');
@@ -21,6 +20,8 @@ export const POST: RequestHandler = async (event) => {
 
 	const { user_id } = await event.request.json() as DeleteRequest;
 	const { data, error: inviteError } = await supabaseService.auth.admin.deleteUser(user_id);
+
+	console.log(data, inviteError);
 
 	if (inviteError) {
 		throw error(500, inviteError.message);

@@ -91,6 +91,77 @@ export const actions: Actions = {
 
 		return { success: true };
 	},
+	edit: async (event) => {
+		const { supabaseClient } = await getSupabase(event);
+
+		const { request } = event;
+		const formData = await request.formData();
+		const name = formData.get('name') as string;
+		const id = formData.get('id') as string;
+		const table = formData.get('table') as string;
+		const cleanedName = name.trim().replace(/[^a-z0-9_]+/gi, '-').replace(/^-|-$/g, '').toLowerCase();
+
+		if (cleanedName.length < 3) {
+			return fail(400, {
+				error: 'Name too short',
+				values: {
+					name: cleanedName
+				}
+			});
+		}
+
+		const { error: insertError } = await supabaseClient
+			.from(table)
+			.update({
+				name: cleanedName,
+			})
+			.eq('id', Number(id));
+
+		if (insertError) {
+			return fail(500, {
+				error: 'Server error',
+				values: {
+					name: cleanedName
+				}
+			});
+		}
+
+		return { success: true };
+	},
+	delete: async (event) => {
+		const { supabaseClient } = await getSupabase(event);
+
+		const { request } = event;
+		const formData = await request.formData();
+		const id = formData.get('id') as string;
+		const table = formData.get('table') as string;
+		const confirm = formData.get('confirm') as string;
+
+		if (confirm.toLowerCase() !== 'delete') {
+			return fail(400, {
+				error: 'You did not type delete',
+				values: {
+					confirm: confirm
+				}
+			});
+		}
+
+		const { error: insertError } = await supabaseClient
+			.from(table)
+			.delete()
+			.eq('id', Number(id));
+
+		if (insertError) {
+			return fail(500, {
+				error: 'Server error',
+				values: {
+					confirm: confirm
+				}
+			});
+		}
+
+		return { success: true };
+	},
 	sendInvite: async (event) => {
 		const { request, fetch } = event;
 		const { session, supabaseClient } = await getSupabase(event);
