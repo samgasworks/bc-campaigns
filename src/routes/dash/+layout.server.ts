@@ -9,8 +9,8 @@ export const load: LayoutServerLoad = async (event) => {
 		throw redirect(307, '/login');
 	}
 
-	if (session?.user?.user_metadata?.pw_set !== true && url.href.indexOf('/dash?set=password') === -1) {
-	 	throw redirect(307, '/dash?set=password');
+	if (session?.user?.user_metadata?.pw_set !== true && url.pathname.indexOf('/dash/set-password') === -1) {
+	 	throw redirect(307, '/dash/set-password');
 	}
 
 	const { data: account } = await supabaseClient

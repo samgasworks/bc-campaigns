@@ -11,8 +11,6 @@ export const load: PageServerLoad = async (event) => {
 	if (!session) {
 		throw redirect (307, '/login');
 	}
-	const { url } = event;
-	const set_password = url.searchParams.get('set') === 'password' ? true : false;
 
 	const { data: campaigns } = await supabaseClient
 		.from('campaigns')
@@ -20,8 +18,7 @@ export const load: PageServerLoad = async (event) => {
 		.order('created_at', { ascending: false });
 
 	return {
-		campaigns: campaigns,
-		set_password: set_password
+		campaigns: campaigns
 	}
 }
 
