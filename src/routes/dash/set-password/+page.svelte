@@ -24,10 +24,10 @@
 	<title>Set Your Password | BCRV</title>
 </svelte:head>
 
-<div class="max-w-2xl mx-auto">
+<div class="max-w-xl w-full mx-auto">
 	<Container>
 		<div slot="title" class="flex justify-center items-center">
-			<div class="text-lg font-medium text-gray-900">
+			<div class="font-medium text-gray-900">
 				Set a password for future logins
 			</div>
 		</div> 
