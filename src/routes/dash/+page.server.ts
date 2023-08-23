@@ -199,6 +199,14 @@ export const actions: Actions = {
 			});
 		}
 
+		const { error: refreshError } = await supabaseClient.auth.refreshSession();
+
+		if (refreshError) {
+			return fail(500, {
+				error: 'Server error. Try again in a few minutes.'
+			});
+		}
+
 		return { success: true };
 	}
 };
