@@ -13,7 +13,7 @@
 			<div
 				transition:fade|local={{ delay: 0, duration: 200, easing: cubicInOut }}
 				on:click={() => (closeable ? $currentModal = null : null)}
-				class="{closeable ? 'cursor-pointer' : ''}fixed inset-0 bg-black bg-opacity-40 transition-opacity"
+				class="{closeable ? 'cursor-pointer' : ''} fixed inset-0 bg-black bg-opacity-40 transition-opacity"
 				aria-hidden="true"
 			/>
 

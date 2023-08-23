@@ -78,8 +78,10 @@
 				<th scope="col" class="px-4 py-2 text-left">
 					URL
 				</th>
+				{#if $page.data.account?.role > 5}
 				<th scope="col" class="px-4 py-2 text-left sm:pr-6">
 				</th>
+				{/if}
 			</tr>
 		</thead>
 		<tbody class="divide-y divide-gray-200 text-gray-700 text-sm font-light">
@@ -104,6 +106,7 @@
 						{campaign.url}?utm_source={source ? source.name : ''}&utm_medium={medium ? medium.name : ''}&utm_campaign={campaign.name}&utm_id={padCampaignId(campaign.id)}
 					</p>
 				</td>
+				{#if $page.data.account?.role > 5}
 				<td class="p-4 sm:pr-6">
 					<div class="flex justify-end space-x-4">
 						<button on:click={() => $currentModal = `edit_${campaign.id}`} class="text-blue-500/50 hover:text-blue-500">
@@ -119,6 +122,7 @@
 						</button>
 					</div>
 				</td>
+				{/if}
 			</tr>
 			{/each}
 		</tbody>

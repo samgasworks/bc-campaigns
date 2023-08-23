@@ -13,6 +13,12 @@ export const load: LayoutServerLoad = async (event) => {
 	 	throw redirect(307, '/dash?set=password');
 	}
 
+	const { data: account } = await supabaseClient
+		.from('accounts')
+		.select('*')
+		.eq('id', session.user.id)
+		.single();
+
 	const { data: sources } = await supabaseClient
 		.from('sources')
 		.select('*')
@@ -26,6 +32,7 @@ export const load: LayoutServerLoad = async (event) => {
 	return {
 		sources: sources,
 		mediums: mediums,
+		account: account
 	}
 
 }

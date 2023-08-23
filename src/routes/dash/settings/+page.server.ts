@@ -10,8 +10,13 @@ export const load: PageServerLoad = async (event) => {
 		throw redirect (307, '/login');
 	}
 
-	const { url } = event;
-	const reset_password = url.searchParams.get('reset') === 'password' ? true : false;
+	const { parent } = event;
+
+	const { account } = await parent();
+
+	if (account && account.role < 5) {
+		throw redirect(307, '/dash');
+	}
 
 	const { data: users } = await supabaseClient
 		.from('accounts')
@@ -24,7 +29,6 @@ export const load: PageServerLoad = async (event) => {
 	return {
 		users: users,
 		requests: requests,
-		reset_password: reset_password
 	}
 }
 
