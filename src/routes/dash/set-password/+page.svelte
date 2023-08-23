@@ -24,11 +24,11 @@
 	<title>Set Your Password | BCRV</title>
 </svelte:head>
 
-<div class="max-w-xl mx-auto">
+<div class="max-w-2xl mx-auto">
 	<Container>
 		<div slot="title" class="flex justify-center items-center">
 			<div class="text-xl font-medium text-gray-900">
-				Set a password for furure logins
+				Set a password for future logins
 			</div>
 		</div> 
 		<form method="POST" use:enhance={handleSubmit} slot="content" class="px-4 py-6 flex flex-col items-center justify-center space-y-4">
