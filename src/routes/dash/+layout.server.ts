@@ -9,7 +9,7 @@ export const load: LayoutServerLoad = async (event) => {
 		throw redirect(307, '/login');
 	}
 
-	if (session?.user?.user_metadata?.pw_set !== true && url.pathname.indexOf('/dash/set-password') === -1) {
+	if (session?.user?.user_metadata?.pw_set !== true && url.pathname !== '/dash/set-password') {
 	 	throw redirect(307, '/dash/set-password');
 	}
 
