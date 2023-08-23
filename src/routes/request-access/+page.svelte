@@ -55,7 +55,7 @@
 				</div>
 
 				<div>
-					<label for="last_name" class="block text-sm font-medium leading-6 text-gray-900">First Name</label>
+					<label for="last_name" class="block text-sm font-medium leading-6 text-gray-900">Last Name</label>
 						<div class="mt-2">
 						<input id="last_name" name="last_name" type="text" autocomplete="family-name" required class="standard-form">
 					</div>

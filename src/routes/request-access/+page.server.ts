@@ -4,11 +4,7 @@ import { getSupabase } from '@supabase/auth-helpers-sveltekit';
 
 export const actions: Actions = {
 	default: async (event) => {
-		const { session, supabaseClient } = await getSupabase(event);
-		if (!session) {
-			// the user is not signed in
-			throw error(403, { message: 'Unauthorized' });
-		}
+		const { supabaseClient } = await getSupabase(event);
 
 		const { request } = event;
 		const formData = await request.formData();
